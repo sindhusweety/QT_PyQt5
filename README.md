@@ -9,7 +9,7 @@ sudo apt install pyqt5
 pyuic5 -x project.ui -o project.py
 
 to import image
-
+click 
 "<RCC>
   <qresource prefix="home/sindhu/PycharmProjects/sindhu/neural_network/NEUROCAD_GUI/images">
     <file>gaussian.qrc</file>
