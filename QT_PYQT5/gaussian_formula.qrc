@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="home/sindhu/PycharmProjects/sindhu/neural_network/NEUROCAD_GUI/images">
+    <file>gaussian.qrc</file>
+    <file>gaussian_formula.jpg</file>
+  </qresource>
+</RCC>
