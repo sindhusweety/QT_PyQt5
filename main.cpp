@@ -10,6 +10,36 @@
 using namespace cv;
 using namespace std;
 
+
+
+#include <opencv2/highgui.hpp>
+
+
+int maintest()
+{
+	Mat output;
+	int uX=400/2;
+	int uY=400/2;
+	float sigmaX=1.0;
+	float sigmaY=1.0;
+	int amplitude = 1;
+	Mat temp(400,400, CV_32F);
+	for (int r = 0; r < 400; r++)
+	{
+		for (int c = 0; c < 400; c++)
+		{
+			float x = ((c - uX) * ((float)c -uX)) /(2.0f * sigmaX *sigmaY);
+			float y = ((c - uY) * ((float)c - uY)) / (2.0f * sigmaX *sigmaY);
+			float value = amplitude * exp(-(x + y));
+			temp.at<float>(r, c) = value;
+		}
+	}
+	normalize(temp, temp, 0.0f,1.0f, NORM_MINMAX);
+	output = temp;
+	imshow("Gaussian.png", temp);
+	return 0;
+}
+
 void LinearSpacedArray(float a, float b, float num)
 {
 
@@ -25,12 +55,6 @@ void LinearSpacedArray(float a, float b, float num)
 	{
 		for (int xMap = 0; xMap < sizeX; xMap++)
 		{
-			//float distx = x0 + xMap * (y0 - x0) / (floor((float)sizeX) - 1);
-			//float disty = x0 + yMap * (y0 - x0) / (floor((float)sizeY) - 1);
-			//float dist = distx - sigmaX;
-			//float dist_ = dist * 2.0f;
-			//float dis = -dist_;
-			//pMap[yMap][xMap] = dis;
 			float distx = abs(xMap - center_x);
 			float disty = abs(yMap - center_y);
 			float dist = sqrt(distx * distx + disty * disty);
@@ -54,25 +78,12 @@ void LinearSpacedArray(float a, float b, float num)
 		for (int j = 0; j < sizeY; j++)
 		{
 			pMap[i][j] /= 255;
-			qDebug() << pMap[i][j];
+			
 		}
 	}
-	int temp = 0;
-	FILE* pgmn;
-	pgmn = fopen("new.pgm", "wb");
-	fprintf(pgmn, "P2\n");
-	fprintf(pgmn, "%d %d \n", 400, 400);
-	fprintf(pgmn, "255\n");
-	for (int i = 0; i < sizeX; i++)
-	{
-		for (int j = 0; j < sizeY; j++)
-		{
-			temp = pMap[i][j];
-			fprintf(pgmn, "%d", temp);
-		}
-		fprintf(pgmn, "\n");
-	}
-
+	Mat grayImage(400, 400, CV_32F, pMap);
+	Mat image;
+	imwrite("Gray_Image_new.png", grayImage);
 	
 	system("pause");
 }
@@ -80,7 +91,9 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	Gaussianui w;
+	maintest();
 	LinearSpacedArray(10, 20, 30);
+	maintest();
 	w.show();
 	return a.exec();
 }
